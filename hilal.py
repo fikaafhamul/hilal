@@ -314,7 +314,7 @@ class caldat:
         elif pilihan == "HARPAS":
             self.result = f"{self.hari_str} {self.pasaran_str}"
         elif pilihan == "TANGGAL":
-            self.result = f"{tgl:02d} {miladi().bulan_miladi(self.bln)} {self.thn:04d}"
+            self.result = f"{self.tgl:02d} {miladi().bulan_miladi(self.bln)} {self.thn:04d}"
         elif pilihan == "JAM":
             self.result = konversi(self.jam, "JAM").result()
         elif pilihan == "JDJAM":
@@ -329,9 +329,6 @@ class caldat:
             self.result = self.tgl, self.bln, self.thn, self.hari_str, self.pasaran_str
         elif pilihan == "JD_HP":
             self.result = f"{self.hari_str}\t{self.pasaran_str}"
-        elif pilihan == "PHASES":
-            a = konversi(self.jam, "JAM").result()
-            self.result = f"{self.tgl:02d} {fungsi.miladi().bulan_miladi(self.bln)} {self.thn:04d} Jam {a}"
         else:
             self.result = f"{self.hari_str} {self.pasaran_str}, {self.tgl:02d} {miladi().bulan_miladi(self.bln)} {self.thn:04d}"
 
@@ -1165,7 +1162,10 @@ def plot_hilal_map(data_peta, bulan_hijriah_str, tahun_hijriah, data_type="altit
         plot_hilal_map(data_peta, bulan, tahun, data_type="elongation")
 
     def tampilkan_kurva_katsner(self, alat='TELESCOPE'):
-        plot_katsner_curve(self.katsner, self.awal_bulan_data, bulan, tahun, alat=alat)
+        if self.katsner.empty:
+            return
+        else:
+            plot_katsner_curve(self.katsner, self.awal_bulan_data, bulan, tahun, alat=alat)
 
 
 st.markdown("<h1 style='text-align: center;'>HISAB AWAL BULAN HIJRIAH</h1>", unsafe_allow_html=True)
@@ -1196,7 +1196,10 @@ data_peta = datapeta(awal_bulan_data)
 plot_altitude =  plot_hilal_map(data_peta, bulan_input, tahun_input, data_type="altitude")
 plot_elongation =  plot_hilal_map(data_peta, bulan_input, tahun_input, data_type="elongation")
 katsner = visibilitas_katsner(awal_bulan_data, lat_input, lon_input, TZ_input, TT_input)
-plot_katsner = plot_katsner_curve(katsner, awal_bulan_data,bulan_input, tahun_input, alat_katsner_input)
+if katsner.empty:
+    pass
+else:
+    plot_katsner = plot_katsner_curve(katsner, awal_bulan_data,bulan_input, tahun_input, alat_katsner_input)
 if st.sidebar.button("Hitung"):
 
     st.code(f"""
@@ -1238,8 +1241,8 @@ if st.sidebar.button("Hitung"):
     st.pyplot(plot_altitude)
     st.pyplot(plot_elongation)
 
-    st.markdown("<h1 style='text-align: center;'>KURVA VISIBILITAS MODEL KATSNER</h1>", unsafe_allow_html=True)
-    st.pyplot(plot_katsner)
-
-
-
+    if katsner.empty:
+        pass 
+    else:
+        st.markdown("<h1 style='text-align: center;'>KURVA VISIBILITAS MODEL KATSNER</h1>", unsafe_allow_html=True)
+        st.pyplot(plot_katsner)
