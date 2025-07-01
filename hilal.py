@@ -1173,8 +1173,8 @@ st.markdown("<h1 style='text-align: center;'>HISAB AWAL BULAN HIJRIAH</h1>", uns
 st.sidebar.header("Input Data")
 
 # Input dari pengguna di sidebar
-bulan_input = int(st.sidebar.number_input("Bulan Hijriah", min_value=1, max_value=12, value=12, step=1))
-tahun_input = int(st.sidebar.number_input("Tahun Hijriah", min_value=1410, value=1446, step=1))
+bulan_input = int(st.sidebar.number_input("Bulan Hijriah", min_value=1, max_value=12, value=2, step=1))
+tahun_input = int(st.sidebar.number_input("Tahun Hijriah", min_value=1410, value=1447, step=1))
 lokasi_input = st.sidebar.text_input("Nama Lokasi", "Semarang")
 lat_input = float(st.sidebar.number_input("Lintang (Decimal Degrees)", value=-6.991667,step=0.000001,format="%.6f"))
 lon_input = float(st.sidebar.number_input("Bujur (Decimal Degrees)", value=110.348055,step=0.000001,format="%.6f"))
